@@ -10,8 +10,11 @@ Can be seen [here](https://github.com/BrunoLevy/learn-fpga/blob/d836bad382563b95
 - 1 bit ring for slower clock, tracking e.g. its raising front. Declare a register having the size of the clock divider `reg [3:0] osc = 1`, update by rotation `osc <= {osc[0,3],osc[3,1]}`, the slower clock is e.g. `clk <= osc[2]|osc[3]` and its posedge is `wire posedg = osc[2]`.
 Can be seen [here](https://github.com/sylefeb/Silice/blob/367ae5ca4f4ff7b155ec84c518fa647b8242eb35/projects/ice-v/ice-v.ice#L181)
 
-- Signed wave (eg between [-128,127]) to unsigned wave (eg [0,255]). Flip the sign bit!
+- Signed value (eg between [-128,127]) to unsigned value (eg between [0,255]). Flip the sign bit!
 Can be seen [here](https://github.com/emard/ulx3s-misc/blob/159edfdb460c3dcdde66138196891dafa5da4f29/examples/audio/hdl/dacpwm.v#L21) and [here](https://github.com/sylefeb/Silice/blob/367ae5ca4f4ff7b155ec84c518fa647b8242eb35/projects/audio_sdcard_streamer/main.ice#L71).
+
+- Sentinel bit when transmitting. Say you are transmitting 8 bits, shifting them right from a register, but do not want to use a counter to know when done. Pack the 8 bits in a 9 bits register with a 1 bit MSB `transmit <= {1b1,data}` and check termination with `wire done = (transmit == 1)`.
+Can be seen [here](https://github.com/sylefeb/Silice/blob/367ae5ca4f4ff7b155ec84c518fa647b8242eb35/projects/common/uart.ice#L74).
 
 - Counter decreasing, monitoring sign bit.
 Can be seen **TODO**
